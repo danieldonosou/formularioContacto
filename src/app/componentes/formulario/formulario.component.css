@@ -43,6 +43,17 @@
     font-size: 15px;
 }
 
-.form-container .btn-send:hover{
+.form-container .btn-send:hover:not([disabled]){
     background: #2ebc99;
+}
+
+.alert-danger{
+color: #721c24;
+background: #f8d7da;
+border-color: #f5c6cb;
+margin-bottom: 5px;
+}
+
+.container-error-message{
+    padding: 3px;
 }

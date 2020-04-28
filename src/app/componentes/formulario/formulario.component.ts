@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DatadbService } from '../../service/datadb.service'
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'formularioContacto',
   templateUrl: './formulario.component.html',
@@ -8,11 +8,15 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class FormularioComponent implements OnInit {
 
+  private emailPattern: any = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+
+
   createFormGroup() {
     return new FormGroup({
-      email: new FormControl(''),
-      nombre: new FormControl(''),
-      mensaje: new FormControl('')
+      email: new FormControl('', [Validators.required, Validators.minLength(5), Validators.pattern(this.emailPattern)]),
+      nombre: new FormControl('', [Validators.required, Validators.minLength(5)]),
+      mensaje: new FormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(100)])
 
     })
   }
@@ -37,7 +41,27 @@ export class FormularioComponent implements OnInit {
       mensaje: 'Hola que tal'
     }
     */
-    this.servicio.guardarMensaje(this.formularioContacto.value);
+   if (this.formularioContacto.valid)
+   {
+      console.log('es valido');
+      this.servicio.guardarMensaje(this.formularioContacto.value);
+      this.onResetForm();
+   }
+   else
+   {
+    console.log('No es valido');
+   }
+    
+  }
+
+  get nombre(){
+    return this.formularioContacto.get('nombre');
+  }
+  get email(){
+    return this.formularioContacto.get('email');
+  }
+  get mensaje(){
+    return this.formularioContacto.get('mensaje');
   }
 
 }
